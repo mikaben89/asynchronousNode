@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  script(type='text/javascript', src='vendors/jquery-1.11.1.min.js')
+  script(type='text/javascript', src='vendors/bootstrap/js/bootstrap.min.js')
+  script
+    :coffee
+      $().ready ->
+        console.log 'ready'
+
+
+        $('#btn_login').click (e)->
+          user =
+            username: $('#login-username').val()
+            password: $('#login-password').val()
+          console.log 'user', user
+          e.preventDefault()
+          $.post "/user/login", user, (data) ->
+            console.log 'data', data
+            if user.username is "mika"
+              console.log("#{data.type}")
+          , 'json'
+
+
+
+        $('#btn_signup').click (e)->
+          user =
+            username: $('#login-username').val()
+            password: $('#login-password').val()
+          console.log 'user', user
+          e.preventDefault()
+          $.post "/user/signup", user, (data) ->
+            console.log 'data', data
+            if user.username is "mika"
+              console.log("#{data.type}")
+          , 'json'
+
+  form#login(action="/user/login", method="post", role="form")
+    table
+      tr.form-group
+        th
+          label(for="login-username") Username
+        td
+          input#login-username.form-control(type='text', name="username")
+      tr.form-group
+        th
+          label(for="login-password") Password
+        td
+          input#login-password.form-control(type='password', name="password")
+      tr.form-group
+        th
+        td
+          //- button.btn.btn-primary(type='button') Login
+          //- button.btn.btn-default(type='button') Signin
+          input.btn.btn-primary(type='submit', value="Login", id="btn_login")
+          input.btn.btn-default(type='submit', value="Signup", id="btn_signup")
