@@ -47,14 +47,17 @@ app.get '/', (req, res, next) ->
 app.post '/user/login', (req, res, next) ->
   #TODO: Get la bdd
   res.json
-    type: 'Login'
+    type:  req.body.username
     #get de la bdd c'est ce qui est envoyé à la vue (data dans le post)
 
-
+test = db "../db"
 app.post '/user/signup', (req, res, next) ->
-  #TODO: Get la bdd
-  db.users req.body.username, req.body, (err)->
-    console.log err
+  test.users.set req.body.username,
+    lastname: "Mika"
+    firstname: "Benaim"
+    email: "david@adaltas.com"
+  , (err) ->
+    return next err if err
   res.json
     type: 'Signup'
 
