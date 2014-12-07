@@ -8,49 +8,67 @@ block content
       $().ready ->
         console.log 'ready'
 
+        $('#btn_signup_form').click (e)->
+          $('#login').hide 'drop'
+          $('#signup').toggle 'blind'
+
+        $('#btn_login_form').click (e)->
+          $('#login').show 'blind'
+          $('#signup').hide 'blind'
 
         $('#btn_login').click (e)->
           user =
             username: $('#login-username').val()
             password: $('#login-password').val()
-          console.log 'user', user
           e.preventDefault()
           $.post "/user/login", user, (data) ->
             console.log 'data', data
-            if user.username is "mika"
-              console.log("#{data.type}")
+          $('#login').css 'display':'none'
+          $('#welcome').css 'display':'initial'
           , 'json'
-
-
 
         $('#btn_signup').click (e)->
           user =
-            username: $('#login-username').val()
-            password: $('#login-password').val()
-          console.log 'user', user
+            username: $('#signup-username').val()
+            password: $('#signup-password').val()
+            firstname: $('#signup-firstname').val()
+            lastname: $('#signup-lastname').val()
+            email: $('#signup-email').val()
           e.preventDefault()
           $.post "/user/signup", user, (data) ->
             console.log 'data', data
-            if user.username is "mika"
-              console.log("#{data.type}")
           , 'json'
 
-  form#login(action="/user/login", method="post", role="form")
-    table
-      tr.form-group
-        th
-          label(for="login-username") Username
-        td
-          input#login-username.form-control(type='text', name="username")
-      tr.form-group
-        th
-          label(for="login-password") Password
-        td
-          input#login-password.form-control(type='password', name="password")
-      tr.form-group
-        th
-        td
+  div#wrap
+    div#header
+      h1 Welcome to asynchronousNode
+    div#main
+      form#signup(action="/user/signup", method="post", role="form")
+        label(for="signup-username") Username
+        input#signup-username.form-control(type='text', name="username")
+        label(for="signup-password") Password
+        input#signup-confirmpassword.form-control(type='password', name="password")
+        label(for="signup-confirmpassword") Confirm password
+        input#signup-password.form-control(type='password', name="confirmpassword")
+        label(for="signup-password") Email
+        input#signup-email.form-control(type='text', name="email")
+        label(for="signup-firstname") Firstname
+        input#signup-firstname.form-control(type='text', name="firstname")
+        label(for="signup-lastname") Lastname
+        input#signup-lastname.form-control(type='text', name="lastname")
+        div.buttonForm
           //- button.btn.btn-primary(type='button') Login
-          //- button.btn.btn-default(type='button') Signin
+          //- button.btn.btn-default(type='button') Signup
+          input.btn.btn-default(type='button', value="Login", id="btn_login_form")
+          input.btn.btn-primary(type='submit', value="Signup", id="btn_signup")
+
+      form#login(action="/user/login", method="post", role="form")
+        label(for="login-username") Username
+        input#login-username.form-control(type='text', name="username")
+        label(for="login-password") Password
+        input#login-password.form-control(type='password', name="password")
+        //- button.btn.btn-primary(type='button') Login
+        //- button.btn.btn-default(type='button') Signin
+        div.buttonForm
           input.btn.btn-primary(type='submit', value="Login", id="btn_login")
-          input.btn.btn-default(type='submit', value="Signup", id="btn_signup")
+          input.btn.btn-default(type='button', value="Signup", id="btn_signup_form")

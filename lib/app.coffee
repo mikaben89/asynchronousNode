@@ -1,4 +1,3 @@
-
 http = require 'http'
 stylus = require 'stylus'
 nib = require 'nib'
@@ -14,6 +13,7 @@ serve_favicon = require 'serve-favicon'
 serve_index = require 'serve-index'
 serve_static = require 'serve-static'
 db = require './db'
+test = db "#{__dirname}/../db"
 # config = require '../conf/hdfs'
 
 app = express()
@@ -45,21 +45,21 @@ app.get '/', (req, res, next) ->
   res.render 'index',title: 'Express'
 
 app.post '/user/login', (req, res, next) ->
-  #TODO: Get la bdd
-  res.json
-    type:  req.body.username
-    #get de la bdd c'est ce qui est envoyé à la vue (data dans le post)
+  test.users.get req.body.username
+  , (err, user) ->
+    return next err if err
+    res.json user
 
-test = db "../db"
 app.post '/user/signup', (req, res, next) ->
   test.users.set req.body.username,
-    lastname: "Mika"
-    firstname: "Benaim"
-    email: "david@adaltas.com"
+    password: req.body.password
+    firstname: req.body.firstname
+    lastname: req.body.lastname
+    email: req.body.email
   , (err) ->
     return next err if err
   res.json
-    type: 'Signup'
+    username: req.body.username
 
 app.use serve_index "#{__dirname}/../public"
 if process.env.NODE_ENV is 'development'
