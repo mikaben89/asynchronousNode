@@ -1,6 +1,6 @@
 AsynchronousNode
 
-Project by Michael BENAIM & Kinthia QUISTIN 
+Project by Michael BENAIM (benaim@ece.fr) & Kinthia QUISTIN quistin@ece.fr) 
 Rendu dans le cadre du cours Asynchronous Server Technologies de l'ECE Paris
 Group 04
 
